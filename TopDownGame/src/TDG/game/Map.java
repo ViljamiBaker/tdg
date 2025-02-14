@@ -1,7 +1,6 @@
 package TDG.game;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import TDG.util.Vector2D;
 
@@ -49,6 +48,26 @@ public class Map{
       }
       return adjtiles.toArray(new Tile[adjtiles.size()]);
    }
+   public Node[] getAdjNodes(Node n){
+      int x = (int)n.t.x;
+      int y = (int)n.t.y;
+      Tile[] adj = new Tile[8];
+      adj[0] = getTile(x+1,y);
+      adj[1] = getTile(x-1,y);
+      adj[2] = getTile(x,y+1);
+      adj[3] = getTile(x,y-1);
+      adj[4] = getTile(x+1,y+1);
+      adj[5] = getTile(x-1,y-1);
+      adj[6] = getTile(x-1,y+1);
+      adj[7] = getTile(x+1,y-1);
+      ArrayList<Node> adjtiles = new ArrayList<>(8);
+      for(Tile tile: adj){
+         if(tile!=null){
+            adjtiles.add(new Node(0,0,tile, null));
+         }
+      }
+      return adjtiles.toArray(new Node[adjtiles.size()]);
+   }
    
    public Vector2D convInto(Vector2D in){
       return in.div(squareSize);
@@ -59,61 +78,63 @@ public class Map{
    }
    
    public Path generatePath(Vector2D start, Vector2D end){
-      Tile endTile = getTile(end);
+      Node startNode = new Node(0,Math.pow(start.x-end.x,2)+Math.pow(start.y-end.y,2),getTile(start),null);
       Path newPath = new Path(getTile(start), getTile(end));
-      ArrayList<Tile> tiles = new ArrayList<>();
-      tiles.add(getTile(start));
-      ArrayList<Double> movement = new ArrayList<>();
-      movement.add(0.0);
-      ArrayList<Tile> newTiles = new ArrayList<>();
-      newTiles.add(getTile(start));
-      ArrayList<Tile> lastTiles = new ArrayList<>();
-      lastTiles.add(getTile(start));
+      ArrayList<Node> openList = new ArrayList<>(size*size*2);
+      openList.add(startNode);
+      ArrayList<Node> closedList = new ArrayList<>(size*size*2);
       boolean found = false;
       do{
-         for(int i = 0; i < tiles.size(); i++){
-            ArrayList<Tile> oldTiles = new ArrayList<>(newTiles.size());
-            for(Tile t: newTiles){
-               oldTiles.add(new Tile(t));
-            }
-            newTiles.clear();
-            Tile tile = tiles.get(i);
-            if(oldTiles.contains(tile)){
-               continue;
-            }
-            Tile[] adj = getAdjTiles(tile);
-            for(Tile a: adj){
-               if(a.equals(lastTiles.get(i))||a.movement <= 0.0){// if it is our lt then dont
-                  continue;
-               }
-               if(tiles.contains(a)){// if the tile is already checked see if we need to update it
-                  double newMovement = (movement.get(i)+tile.movement)*(Math.pow(tile.x-a.x,2)+Math.pow(tile.y-a.y,2));
-                  if(movement.get(tiles.indexOf(a))>newMovement){
-                     int index = tiles.indexOf(a);
-                     lastTiles.set(index, tile);
-                     movement.set(index, newMovement);
-                  }
-               }else{
-                  tiles.add(a);
-                  lastTiles.add(tile);
-                  newTiles.add(a);
-                  movement.add(movement.get(i)+tile.movement);
-               }
+         int bestIndex = -1;
+         double bestF = 100000000;
+         for(int i = 0; i<openList.size(); i++){
+            if(openList.get(i).F<bestF){
+               bestIndex = i;
+               bestF = openList.get(i).F;
             }
          }
-      }while(!tiles.contains(endTile)||newTiles.size()!=0);
-      ArrayList<Tile> pathTiles = new ArrayList<>();
-      Tile lastTile = getTile(end);
-      pathTiles.add(lastTile);
-      if(tiles.contains(endTile)){
-         do{
-            lastTile = lastTiles.get(tiles.indexOf(lastTile));
-            pathTiles.add(lastTile);
-         }while(!lastTile.equals(getTile(start)));
-      }else{
-         System.out.println("NO PATH FOUND :(((");
-      }
-      newPath.lastTiles = pathTiles.toArray(new Tile[0]);
+         if(bestIndex==-1){
+            System.out.println("WTF");
+         }
+         Node best = openList.get(bestIndex);
+         openList.remove(best);
+         closedList.add(best);
+         if(best.t.equals(getTile(end))){
+            ArrayList<Tile> pathTiles = new ArrayList<>();
+            Node lastNode = best;
+            pathTiles.add(lastNode.t);
+            do{
+               pathTiles.add(lastNode.t);
+               lastNode = lastNode.parentNode;
+            }while(!lastNode.equals(new Node(getTile(start))));
+            pathTiles.add(getTile(start));
+            newPath.lastTiles = pathTiles.toArray(new Tile[0]);
+            return newPath;
+         }
+         Node[] adjNodes = getAdjNodes(best);
+         for(int i = 0; i< adjNodes.length; i++){
+            if(closedList.contains(adjNodes[i])||adjNodes[i].t.movement<0.0){
+               continue;
+            }
+            if(!openList.contains(adjNodes[i])){
+               openList.add(adjNodes[i]);
+               adjNodes[i].G = Math.abs(adjNodes[i].t.x-start.x)+Math.abs(adjNodes[i].t.y-start.y);
+               adjNodes[i].H = Math.pow(adjNodes[i].t.x-end.x,2)+Math.pow(adjNodes[i].t.y-end.y,2);
+               adjNodes[i].F = adjNodes[i].G+adjNodes[i].H;
+               adjNodes[i].parentNode = best;
+            }else{
+               double newG = Math.abs(adjNodes[i].t.x-start.x)+Math.abs(adjNodes[i].t.y-start.y);
+               if(adjNodes[i].G<newG){
+                  continue;
+               }
+               adjNodes[i].G = newG;
+               adjNodes[i].F = adjNodes[i].G+adjNodes[i].H;
+               adjNodes[i].parentNode = best;
+            }
+         }
+         found = closedList.contains(new Node(getTile(end)));
+      }while(!found||openList.size()!=0);
+      System.out.println("NO PATH FOUND :(((");
       return newPath;
    }
 }

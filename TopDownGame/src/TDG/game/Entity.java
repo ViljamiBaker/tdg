@@ -43,7 +43,7 @@ public class Entity{
    public Entity(EntityTemplate et, Map map, Pose2D pose, int team){
       this.maxHealth = et.maxHealth;
       this.health = et.maxHealth;
-      this.s = et.s;
+      this.s = new Sprite(et.s);
       this.armor = et.armor;
       this.range = et.range;
       this.damage = et.damage;
@@ -52,6 +52,7 @@ public class Entity{
       this.team = team;
       this.map = map;
       this.pose = pose;
+      s.p = this.getPose();
    }
    private void getNextTile(){
       for(int i = 0; i<path.lastTiles.length-1; i++){
