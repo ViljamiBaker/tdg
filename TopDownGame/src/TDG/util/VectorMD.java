@@ -1,4 +1,4 @@
-package Game.util;
+package TDG.util;
 
 public class VectorMD {
    public double M;

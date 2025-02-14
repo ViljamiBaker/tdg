@@ -1,4 +1,4 @@
-package Game.util;
+package TDG.util;
 
 public class Pose2D{
    public Vector2D pos;

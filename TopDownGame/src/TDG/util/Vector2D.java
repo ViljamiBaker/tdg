@@ -1,4 +1,4 @@
-package Game.util;
+package TDG.util;
 
 public class Vector2D {
    public double x;

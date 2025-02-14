@@ -1,9 +1,9 @@
-package Game.game;
+package TDG.game;
 
-import Game.rendering.Sprite;
-import Game.util.Vector2D;
-import Game.util.VectorMD;
-import Game.util.Pose2D;
+import TDG.rendering.Sprite;
+import TDG.util.Vector2D;
+import TDG.util.VectorMD;
+import TDG.util.Pose2D;
 
 public class Entity{
    public Sprite s;
@@ -14,6 +14,8 @@ public class Entity{
    public double damage;
    public double aoe;
    public double ap;
+
+   public int team;
    
    private Pose2D pose;
    private Map map;
@@ -38,7 +40,7 @@ public class Entity{
       return new Vector2D[] {tilePos,targetPoint};
    }
    
-   public Entity(EntityTemplate et, Map map, Pose2D pose){
+   public Entity(EntityTemplate et, Map map, Pose2D pose, int team){
       this.maxHealth = et.maxHealth;
       this.health = et.maxHealth;
       this.s = et.s;
@@ -47,6 +49,7 @@ public class Entity{
       this.damage = et.damage;
       this.aoe = et.aoe;
       this.ap = et.ap;
+      this.team = team;
       this.map = map;
       this.pose = pose;
    }

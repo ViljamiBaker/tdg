@@ -1,12 +1,12 @@
-package Game;
+package TDG;
 
 import java.util.ArrayList;
 import java.awt.event.KeyEvent;
 
-import Game.rendering.Renderer;
-import Game.rendering.Camera;
-import Game.util.keyListener;
-import Game.game.GameManager;
+import TDG.rendering.Renderer;
+import TDG.rendering.Camera;
+import TDG.util.keyListener;
+import TDG.game.GameManager;
 
 //handles user interfacing
 //also communicates from game to rendering

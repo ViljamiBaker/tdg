@@ -1,17 +1,17 @@
-package Game.rendering;
+package TDG.rendering;
 
 import javax.swing.JFrame;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import Game.game.Tile;
-import Game.game.Map;
-import Game.game.Path;
-import Game.game.Entity;
+import TDG.game.Tile;
+import TDG.game.Map;
+import TDG.game.Path;
+import TDG.game.Entity;
 
-import Game.util.Vector2D;
-import Game.util.VectorMD;
+import TDG.util.Vector2D;
+import TDG.util.VectorMD;
 
 public class Renderer extends JFrame{
    private Graphics g;

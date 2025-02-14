@@ -1,6 +1,4 @@
-package Game.game;
-
-import Game.util.Vector2D;
+package TDG.game;
 
 public class Path{
    public Tile start;

@@ -1,7 +1,7 @@
-package Game.rendering;
+package TDG.rendering;
 
-import Game.util.Vector2D;
-import Game.util.VectorMD;
+import TDG.util.Vector2D;
+import TDG.util.VectorMD;
 
 public class Camera{
    public Vector2D pos;

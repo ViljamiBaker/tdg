@@ -1,11 +1,11 @@
-package Game.game;
+package TDG.game;
 
 import java.util.ArrayList;
 
-import Game.rendering.Sprite;
-import Game.util.Vector2D;
-import Game.util.VectorMD;
-import Game.util.Pose2D;
+import TDG.rendering.Sprite;
+import TDG.util.Vector2D;
+import TDG.util.VectorMD;
+import TDG.util.Pose2D;
 public class GameManager{
    private ArrayList<Entity> entities = new ArrayList<>();
    private Map map;
@@ -25,8 +25,8 @@ public class GameManager{
    );
    public GameManager(){
       map = new Map(100,20);
-      entities.add(new Entity(et, map, new Pose2D(new Vector2D(100,0), new VectorMD(1,0)),2));
-      entities.add(new Entity(et, map, new Pose2D(new Vector2D(1000,0), new VectorMD(1,0)),2));
+      entities.add(new Entity(et, map, new Pose2D(new Vector2D(100,0), new VectorMD(1,0)),1));
+      entities.add(new Entity(et, map, new Pose2D(new Vector2D(1000,0), new VectorMD(1,0)),1));
       entities.add(new Entity(et, map, new Pose2D(new Vector2D(100,0), new VectorMD(1,0)),2));
       entities.add(new Entity(et, map, new Pose2D(new Vector2D(1000,0), new VectorMD(1,0)),2));
       entities.add(new Entity(et, map, new Pose2D(new Vector2D(100,0), new VectorMD(1,0)),2));

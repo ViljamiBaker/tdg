@@ -1,4 +1,4 @@
-package Game.game;
+package TDG.game;
 
 public class Tile{
    public double movement;

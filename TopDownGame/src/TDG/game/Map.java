@@ -1,9 +1,9 @@
-package Game.game;
+package TDG.game;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import Game.util.Vector2D;
+import TDG.util.Vector2D;
 
 public class Map{
    public Tile[][] tiles;

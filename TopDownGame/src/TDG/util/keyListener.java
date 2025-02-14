@@ -1,7 +1,6 @@
-package Game.util;
+package TDG.util;
 
 import java.util.HashSet;
-import javax.swing.JFrame;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 

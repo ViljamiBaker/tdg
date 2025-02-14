@@ -1,6 +1,6 @@
-package Game.rendering;
+package TDG.rendering;
 
-import Game.util.Pose2D;
+import TDG.util.Pose2D;
 
 public class Sprite{
    int[] xposes;

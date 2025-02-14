@@ -1,6 +1,6 @@
-package Game.game;
+package TDG.game;
 
-import Game.rendering.Sprite;
+import TDG.rendering.Sprite;
 
 public class EntityTemplate{
    public Sprite s;
