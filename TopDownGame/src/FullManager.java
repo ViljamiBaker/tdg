@@ -56,7 +56,7 @@ public class FullManager{
          1.02
       );
    }
-   public static void main(String args[]){
+   public static void main(String[] args){
       FullManager fm = new FullManager();
    }
 }
