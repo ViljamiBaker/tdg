@@ -27,7 +27,7 @@ public class FullManager{
    private void run(){
       double i = 0;
       while(true){
-         double t = System.nanoTime()/1000000;
+         double t = System.currentTimeMillis();
          checkKeys();
          i++;
          gm.update();
@@ -36,7 +36,7 @@ public class FullManager{
          r.paint();
          //c.rot = c.rot.addDD(0.01);
          //c.zoom = Math.sin(i/100.0)+1.1;
-         double t2 = System.nanoTime()/1000000;
+         double t2 = System.currentTimeMillis();
          try {Thread.sleep((int)Math.max(16-(t2-t),0));}catch(InterruptedException e){}
       }
    }
