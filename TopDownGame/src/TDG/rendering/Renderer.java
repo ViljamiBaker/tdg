@@ -30,7 +30,7 @@ public class Renderer extends JFrame{
       this.camera = new Camera(new Vector2D(0,0), new VectorMD(1,0));
       this.map = map;
    }
-   
+
    private Vector2D convertVec2D(Vector2D initial){
       return initial.add(camera.pos.n()).convert().addD(-camera.rot.D).convert().div(camera.zoom).add(center);
    }
@@ -103,9 +103,9 @@ public class Renderer extends JFrame{
    public  void updateEntity(){
       double lowestDist = 10000;
       for(int i = 0; i < entities.length; i++){
-         if(convertVec2D(entities[i].getPose().pos).magnitude()<lowestDist){
-            entitiesToDraw = entities;
-            lowestDist = convertVec2D(entities[i].getPose().pos).magnitude();
+         if(convertVec2D(entities[i].getPose().pos).add(center.n()).magnitude()<lowestDist){
+            entitiesToDraw = new Entity[]{entities[i]};
+            lowestDist = convertVec2D(entities[i].getPose().pos).add(center.n()).magnitude();
          }
       }
       
@@ -125,14 +125,14 @@ public class Renderer extends JFrame{
       for(int y = 0; y<map.size; y++){
          for(int x = 0; x<map.size; x++){
             drawRect(bg, new Vector2D(x*map.squareSize,y*map.squareSize), new Vector2D(map.squareSize,map.squareSize));
-            //drawLines(ug,new String[]{String.valueOf(map.getTile(x,y).movement)}, convertVec2D(new Vector2D(x*map.squareSize,y*map.squareSize).add(new Vector2D(map.squareSize/2,map.squareSize/2))));
+            drawLines(ug,new String[]{String.valueOf((int)map.getTile(x,y).movement)}, convertVec2D(new Vector2D(x*map.squareSize,y*map.squareSize).add(new Vector2D(map.squareSize/2,map.squareSize/2))));
          }
       }
       for(int i = 0; i < entities.length; i++){
          drawSprite(bg, entities[i].s);
       }
       for(int i = 0; i < entitiesToDraw.length; i++){
-         //drawEntity(bg, ug, entitiesToDraw[i]);
+         drawEntity(bg, ug, entitiesToDraw[i]);
       }
       ag.drawImage(bi,0,800,1000,-800,null);
       ag.drawImage(ui,0,0,null);
@@ -144,7 +144,7 @@ public class Renderer extends JFrame{
    }
    
    public static void main(String args[]){
-      Renderer r = new Renderer(new Map(10,10));
+      Renderer r = new Renderer(new Map(10,10,20));
       r.paint();
       while(true){
          double t = System.nanoTime()/1000000;

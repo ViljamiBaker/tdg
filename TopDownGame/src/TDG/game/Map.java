@@ -6,18 +6,37 @@ import TDG.util.Vector2D;
 
 public class Map{
    public Tile[][] tiles;
+   // [htilex][htiley][disttilex][disttiley]distance
+   public double[][][][] hTilesDist;
    public int size;
    public double squareSize;
-   public Map(int size, double squareSize){
+   public int hTilesCount;
+   public Map(int size, double squareSize, int hTilesCount){
       tiles = new Tile[size][size];
       this.size = size;
       this.squareSize = squareSize;
       for(int x = 0; x<size; x++){
          for(int y = 0; y<size; y++){
-            tiles[x][y] = new Tile(10, Math.random()*4+1, x, y);
+            tiles[x][y] = new Tile(10, Math.random()*10+1, x, y);
+         }
+      }
+      generateHeuristics();
+   }
+
+   private void generateHeuristics(){
+      hTilesDist = new double[hTilesCount][hTilesCount][hTilesCount][hTilesCount];
+      int hTileDist = size/(hTilesCount+1);
+      for(int x1 = 0; x1<hTilesCount; x1++){
+         for(int y1 = 0; y1<hTilesCount; y1++){
+            for(int x2 = 0; x2<hTilesCount; x2++){
+               for(int y2 = 0; y2<hTilesCount; y2++){
+                  hTilesDist[x1][y1][x2][y2] = 
+               }
+            }
          }
       }
    }
+
    public Tile getTile(Vector2D xy){
       return getTile((int)xy.x,(int)xy.y);
    }
@@ -118,12 +137,13 @@ public class Map{
             }
             if(!openList.contains(adjNodes[i])){
                openList.add(adjNodes[i]);
-               adjNodes[i].G = Math.abs(adjNodes[i].t.x-start.x)+Math.abs(adjNodes[i].t.y-start.y);
-               adjNodes[i].H = Math.pow(adjNodes[i].t.x-end.x,2)+Math.pow(adjNodes[i].t.y-end.y,2);
+               adjNodes[i].G = best.G + (Math.abs(adjNodes[i].t.x-best.t.x)+Math.abs(adjNodes[i].t.y-best.t.y)) * best.t.movement;
+               System.out.println(adjNodes[i].G);
+               adjNodes[i].H = Math.pow(adjNodes[i].t.x-end.x,2)+Math.pow(adjNodes[i].t.y-end.y,2)/10;
                adjNodes[i].F = adjNodes[i].G+adjNodes[i].H;
                adjNodes[i].parentNode = best;
             }else{
-               double newG = Math.abs(adjNodes[i].t.x-start.x)+Math.abs(adjNodes[i].t.y-start.y);
+               double newG = best.G + Math.abs(adjNodes[i].t.x-best.t.x)+Math.abs(adjNodes[i].t.y-best.t.y) * best.t.movement;
                if(adjNodes[i].G<newG){
                   continue;
                }

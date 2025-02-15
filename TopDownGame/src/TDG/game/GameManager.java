@@ -24,9 +24,9 @@ public class GameManager{
       10.0
    );
    public GameManager(){
-      map = new Map(100,20);
+      map = new Map(100,20.0, 20);
       entities.add(new Entity(et, map, new Pose2D(new Vector2D(100,0), new VectorMD(1,0)),1));
-      entities.add(new Entity(et, map, new Pose2D(new Vector2D(1000,0), new VectorMD(1,0)),1));
+      /*entities.add(new Entity(et, map, new Pose2D(new Vector2D(1000,0), new VectorMD(1,0)),1));
       entities.add(new Entity(et, map, new Pose2D(new Vector2D(100,0), new VectorMD(1,0)),2));
       entities.add(new Entity(et, map, new Pose2D(new Vector2D(1000,0), new VectorMD(1,0)),2));
       entities.add(new Entity(et, map, new Pose2D(new Vector2D(100,0), new VectorMD(1,0)),2));
@@ -40,7 +40,7 @@ public class GameManager{
       entities.add(new Entity(et, map, new Pose2D(new Vector2D(100,0), new VectorMD(1,0)),2));
       entities.add(new Entity(et, map, new Pose2D(new Vector2D(1000,0), new VectorMD(1,0)),2));
       entities.add(new Entity(et, map, new Pose2D(new Vector2D(100,0), new VectorMD(1,0)),2));
-      entities.add(new Entity(et, map, new Pose2D(new Vector2D(1000,0), new VectorMD(1,0)),2));
+      entities.add(new Entity(et, map, new Pose2D(new Vector2D(1000,0), new VectorMD(1,0)),2));*/
    }
    public Entity[] getEntities(){
       Entity[] entitesa = new Entity[entities.size()];

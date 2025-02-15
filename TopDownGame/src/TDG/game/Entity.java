@@ -14,6 +14,7 @@ public class Entity{
    public double damage;
    public double aoe;
    public double ap;
+   public double speed;
 
    public int team;
    
@@ -49,6 +50,7 @@ public class Entity{
       this.damage = et.damage;
       this.aoe = et.aoe;
       this.ap = et.ap;
+      this.speed = et.speed;
       this.team = team;
       this.map = map;
       this.pose = pose;
@@ -74,14 +76,14 @@ public class Entity{
          System.out.println("path.end: " + path.end);
          getNextTile();
       }
-      if(nextTile.equals(map.getTile(tilePos))&&pose.pos.add(targetPoint.n()).magnitude()<map.squareSize/5){
+      if(nextTile.equals(map.getTile(tilePos))&&pose.pos.add(targetPoint.n()).magnitude()<map.squareSize){
          getNextTile();
       }
       if(targetPoint == null){
          targetPoint = new Vector2D(nextTile.x,nextTile.y).multiply(map.squareSize).add(new Vector2D(map.squareSize/2,map.squareSize/2));//new Vector2D(Math.random()*map.squareSize,Math.random()*map.squareSize));
          //System.out.println("targetPoint: " + targetPoint);
       }
-      pose.rot = targetPoint.add(pose.pos.n()).convert().normal();
+      pose.rot = targetPoint.add(pose.pos.n()).convert().normal().mult(speed).mult(1/map.getTile(tilePos).movement);
       pose.pos = pose.pos.add(pose.rot.convert());
       //rot = rot.addD(-0.01);
       //pos = pos.add(rot.convert());
