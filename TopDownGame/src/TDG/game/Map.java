@@ -10,8 +10,8 @@ public class Map{
    public double[][][][] hTilesDist;
    public int size;
    public double squareSize;
-   public int hTilesCount;
-   public Map(int size, double squareSize, int hTilesCount){
+   public int hMult;
+   public Map(int size, double squareSize, int hMult){
       tiles = new Tile[size][size];
       this.size = size;
       this.squareSize = squareSize;
@@ -20,21 +20,7 @@ public class Map{
             tiles[x][y] = new Tile(10, Math.random()*10+1, x, y);
          }
       }
-      generateHeuristics();
-   }
-
-   private void generateHeuristics(){
-      hTilesDist = new double[hTilesCount][hTilesCount][hTilesCount][hTilesCount];
-      int hTileDist = size/(hTilesCount+1);
-      for(int x1 = 0; x1<hTilesCount; x1++){
-         for(int y1 = 0; y1<hTilesCount; y1++){
-            for(int x2 = 0; x2<hTilesCount; x2++){
-               for(int y2 = 0; y2<hTilesCount; y2++){
-                  hTilesDist[x1][y1][x2][y2] = 
-               }
-            }
-         }
-      }
+      this.hMult = hMult;
    }
 
    public Tile getTile(Vector2D xy){
@@ -47,22 +33,15 @@ public class Map{
       return tiles[x][y];
    }
    
+   private int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1},{1,1},{-1,-1},{-1,1},{1,-1}};
+
    public Tile[] getAdjTiles(Tile t){
       int x = (int)t.x;
       int y = (int)t.y;
-      Tile[] adj = new Tile[8];
-      adj[0] = getTile(x+1,y);
-      adj[1] = getTile(x-1,y);
-      adj[2] = getTile(x,y+1);
-      adj[3] = getTile(x,y-1);
-      adj[4] = getTile(x+1,y+1);
-      adj[5] = getTile(x-1,y-1);
-      adj[6] = getTile(x-1,y+1);
-      adj[7] = getTile(x+1,y-1);
       ArrayList<Tile> adjtiles = new ArrayList<>(1);
-      for(Tile tile: adj){
-         if(tile!=null){
-            adjtiles.add(tile);
+      for(int i = 0; i<8; i++){
+         if(getTile(x+dirs[i][0],y+dirs[i][1])!=null){
+            adjtiles.add(getTile(x+dirs[i][0],y+dirs[i][1]));
          }
       }
       return adjtiles.toArray(new Tile[adjtiles.size()]);
@@ -70,22 +49,12 @@ public class Map{
    public Node[] getAdjNodes(Node n){
       int x = (int)n.t.x;
       int y = (int)n.t.y;
-      Tile[] adj = new Tile[8];
-      adj[0] = getTile(x+1,y);
-      adj[1] = getTile(x-1,y);
-      adj[2] = getTile(x,y+1);
-      adj[3] = getTile(x,y-1);
-      adj[4] = getTile(x+1,y+1);
-      adj[5] = getTile(x-1,y-1);
-      adj[6] = getTile(x-1,y+1);
-      adj[7] = getTile(x+1,y-1);
-      ArrayList<Node> adjtiles = new ArrayList<>(8);
-      for(Tile tile: adj){
-         if(tile!=null){
-            adjtiles.add(new Node(0,0,tile, null));
-         }
+      Tile[] adj = getAdjTiles(new Tile(0,0,x,y));
+      Node[] adjtiles = new Node[adj.length];
+      for(int i = 0; i<adj.length;i++){
+         adjtiles[i] = new Node(adj[i]);
       }
-      return adjtiles.toArray(new Node[adjtiles.size()]);
+      return adjtiles;
    }
    
    public Vector2D convInto(Vector2D in){
@@ -97,6 +66,9 @@ public class Map{
    }
    
    public Path generatePath(Vector2D start, Vector2D end){
+      if(getTile(start)==null){
+         return null;
+      }
       Node startNode = new Node(0,Math.pow(start.x-end.x,2)+Math.pow(start.y-end.y,2),getTile(start),null);
       Path newPath = new Path(getTile(start), getTile(end));
       ArrayList<Node> openList = new ArrayList<>(size*size*2);
@@ -112,9 +84,6 @@ public class Map{
                bestF = openList.get(i).F;
             }
          }
-         if(bestIndex==-1){
-            System.out.println("WTF");
-         }
          Node best = openList.get(bestIndex);
          openList.remove(best);
          closedList.add(best);
@@ -125,7 +94,7 @@ public class Map{
             do{
                pathTiles.add(lastNode.t);
                lastNode = lastNode.parentNode;
-            }while(!lastNode.equals(new Node(getTile(start))));
+            }while(!(lastNode==null));
             pathTiles.add(getTile(start));
             newPath.lastTiles = pathTiles.toArray(new Tile[0]);
             return newPath;
@@ -138,8 +107,7 @@ public class Map{
             if(!openList.contains(adjNodes[i])){
                openList.add(adjNodes[i]);
                adjNodes[i].G = best.G + (Math.abs(adjNodes[i].t.x-best.t.x)+Math.abs(adjNodes[i].t.y-best.t.y)) * best.t.movement;
-               System.out.println(adjNodes[i].G);
-               adjNodes[i].H = Math.pow(adjNodes[i].t.x-end.x,2)+Math.pow(adjNodes[i].t.y-end.y,2)/10;
+               adjNodes[i].H = ((adjNodes[i].t.x-end.x) + (adjNodes[i].t.y-end.y))*hMult;//getClosestHTileDist(adjNodes[i].t,getTile(end));
                adjNodes[i].F = adjNodes[i].G+adjNodes[i].H;
                adjNodes[i].parentNode = best;
             }else{
@@ -155,6 +123,6 @@ public class Map{
          found = closedList.contains(new Node(getTile(end)));
       }while(!found||openList.size()!=0);
       System.out.println("NO PATH FOUND :(((");
-      return newPath;
+      return null;
    }
 }

@@ -1,6 +1,6 @@
 package TDG.game;
 
-public class Node {
+class Node {
     double F;
     double G;
     double H;
