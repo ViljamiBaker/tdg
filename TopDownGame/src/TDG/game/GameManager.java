@@ -81,8 +81,12 @@ public class GameManager{
             int lowestInt = -1;
             double lowestDist = 1000000000;
             for (int j = 0; j < validTargets.size(); j++) {
-               if(validTargets.get(j).getPose().pos.add(null))
+               if(validTargets.get(j).getPose().pos.add(entities.get(i).getPose().pos.n()).magnitude()<lowestDist){
+                  lowestDist = validTargets.get(j).getPose().pos.add(entities.get(i).getPose().pos.n()).magnitude();
+                  lowestInt = j;
+               }
             }
+            entities.get(i).target = validTargets.get(lowestInt);
          }
          entities.get(i).update();
       }
