@@ -7,7 +7,6 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import TDG.game.Tile;
 import TDG.game.Map;
-import TDG.game.Path;
 import TDG.game.Entity;
 
 import TDG.util.Vector2D;
@@ -130,6 +129,9 @@ public class Renderer extends JFrame{
       }
       for(int i = 0; i < entities.length; i++){
          drawSprite(bg, entities[i].s);
+         for(int w = 0; w < entities[i].weps.length; w++){
+            drawSprite(bg, entities[i].weps[w].s);
+         }
       }
       for(int i = 0; i < entitiesToDraw.length; i++){
          drawEntity(bg, ug, entitiesToDraw[i]);

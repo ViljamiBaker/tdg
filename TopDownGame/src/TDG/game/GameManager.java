@@ -21,7 +21,21 @@ public class GameManager{
       10,
       5,
       0.25,
-      10.0
+      10.0,
+      new WeaponTemplate[] {
+         new WeaponTemplate(
+            100, 
+            1, 
+            5, 
+            0.25, 
+            new Sprite(
+               new int[] {0,0}, 
+               new int[] {0, 50}
+            ),
+            new Pose2D(new Vector2D(10, 10), new VectorMD(1, 0)),
+            new VectorMD(1, 45) 
+         )
+      }
    );
    public GameManager(){
       map = new Map(20,100.0, 2);
@@ -57,6 +71,19 @@ public class GameManager{
    
    public void update(){
       for(int i = 0; i<entities.size(); i++){
+         if(entities.get(i).target==null){
+            ArrayList<Entity> validTargets = new ArrayList<>();
+            for (Entity entity : entities) {
+               if(entity.team!=entities.get(i).team){
+                  validTargets.add(entity);
+               }
+            }
+            int lowestInt = -1;
+            double lowestDist = 1000000000;
+            for (int j = 0; j < validTargets.size(); j++) {
+               if(validTargets.get(j).getPose().pos.add(null))
+            }
+         }
          entities.get(i).update();
       }
    }

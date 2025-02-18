@@ -22,6 +22,9 @@ public class Vector2D {
    public Vector2D add(Vector2D other){
       return new Vector2D(this.x + other.x, this.y + other.y);
    }
+   public Vector2D add(VectorMD other){
+      return new Vector2D(this.x + Math.sin(other.D)*other.M, this.y + Math.cos(other.D)*other.M);
+   }
    public Vector2D add(Double other){
       return new Vector2D(this.x + other, this.y + other);
    }
