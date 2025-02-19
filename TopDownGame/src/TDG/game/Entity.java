@@ -10,12 +10,15 @@ public class Entity{
    public double health;
    public double armor;
    public double speed;
+   public double rotSpeed;
 
    public Weapon[] weps;
 
    public int team;
 
    public Entity target;
+
+   private GameManager owner;
    
    private Pose2D pose;
    private Map map;
@@ -25,6 +28,8 @@ public class Entity{
    private Tile nextTile;
    
    private Vector2D tilePos;
+
+   private Vector2D lastTargetTile;
    
    private Vector2D targetPoint;
    
@@ -40,12 +45,13 @@ public class Entity{
       return new Vector2D[] {tilePos,targetPoint};
    }
    
-   public Entity(EntityTemplate et, Map map, Pose2D pose, int team){
+   public Entity(EntityTemplate et, Map map, Pose2D pose, int team, GameManager owner){
       this.maxHealth = et.maxHealth();
       this.health = et.maxHealth();
       this.s = new Sprite(et.s());
       this.armor = et.armor();
       this.speed = et.speed();
+      this.rotSpeed = et.rotSpeed();
       this.team = team;
       this.map = map;
       this.pose = pose;
@@ -53,17 +59,14 @@ public class Entity{
       for (int i = 0; i<et.wt().length; i++) {
          this.weps[i] = new Weapon(et.wt()[i], this);
       }
+      this.owner = owner;
       s.p = this.getPose();
    }
    private void genTargetPoint(){
-      if(target == null){
-         targetPoint = new Vector2D(nextTile.x,nextTile.y).multiply(map.squareSize).add(new Vector2D(map.squareSize/2,map.squareSize/2));
+      if(target != null&&target.pose.pos.add(this.pose.pos).magnitude()<weps[0].range*1.2){
+         targetPoint = target.pose.pos.add(pose.pos.add(target.pose.pos.n()).normal().multiply(weps[0].range*0.9));
       }else{
-         if(target.pose.pos.add(this.pose.pos).magnitude()<weps[0].range*1.2){
-            targetPoint = target.pose.pos.add(pose.pos.add(target.pose.pos.n()).normal().multiply(weps[0].range));
-         }else{
-            targetPoint = new Vector2D(nextTile.x,nextTile.y).multiply(map.squareSize).add(new Vector2D(map.squareSize/2,map.squareSize/2));
-         }
+         targetPoint = new Vector2D(nextTile.x,nextTile.y).multiply(map.squareSize).add(new Vector2D(map.squareSize/2,map.squareSize/2));
       }
    }
    private void getNextTile(){
@@ -76,8 +79,7 @@ public class Entity{
          }
       }
    }
-   public void update(){
-      tilePos = new Vector2D((int)(pose.pos.x/map.squareSize),(int)(pose.pos.y/map.squareSize));
+   private void pathfinding(){
       if(path!=null&&path.end.equals(map.getTile(tilePos))){
          path = null;
       }
@@ -85,24 +87,53 @@ public class Entity{
          if(target == null){
             path = map.generatePath(tilePos, new Vector2D((int)(Math.random()*map.size),(int)(Math.random()*map.size)));
          }else{
-            path = map.generatePath(tilePos, target.pose.pos.div(map.size));
+            if(target.pose.pos.add(this.pose.pos).magnitude()<weps[0].range*1.2){
+               targetPoint = target.pose.pos.add(pose.pos.add(target.pose.pos.n()).normal().multiply(weps[0].range));
+               path = map.generatePath(tilePos, tilePos);
+            }else{
+               path = map.generatePath(tilePos, target.pose.pos.add(pose.pos.add(target.pose.pos.n()).normal().multiply(weps[0].range)).div(map.squareSize).toInt());
+            }
          }
-         if(path == null)return;
+         if(path == null){
+            System.out.println(tilePos);
+            System.out.println(target.pose.pos.add(pose.pos.add(target.pose.pos.n()).normal().multiply(weps[0].range)).div(map.squareSize).toInt());
+            return;
+         }
          getNextTile();
+      }else{
+         if(target!=null){
+            if(!target.tilePos.equals(lastTargetTile)){
+               path = map.generatePath(tilePos, target.pose.pos.add(pose.pos.add(target.pose.pos.n()).normal().multiply(weps[0].range)).div(map.squareSize).toInt());
+               getNextTile();
+               if(path == null){
+                  System.out.println(tilePos);
+                  System.out.println(target.pose.pos.add(pose.pos.add(target.pose.pos.n()).normal().multiply(weps[0].range)).div(map.squareSize).toInt());
+                  return;
+               }
+            }
+         }
+         lastTargetTile = target.tilePos;
       }
-      if(targetPoint == null){
-         genTargetPoint();
-         //System.out.println("targetPoint: " + targetPoint);
+      getNextTile();
+   }
+   public void update(){
+      tilePos = pose.pos.div(map.squareSize).toInt();
+      pathfinding();
+      if(targetPoint.add(pose.pos.n()).magnitude()>map.squareSize/5){
+         double rotation =targetPoint.add(pose.pos.n()).convert().normal().D - pose.rot.D;
+         pose.rot = pose.rot.addD(Math.min(rotation, Math.abs(rotSpeed))*Math.signum(rotSpeed)).normal().mult(speed*(1/map.getTile(tilePos).movement));
+         if(targetPoint.add(pose.pos.n()).magnitude()<map.squareSize/2||Math.abs(rotation)<0.03){
+            pose.pos = pose.pos.add(pose.rot.convert());
+         }
+      }else{
+         if(target!=null){
+            double rotation = target.pose.pos.add(pose.pos.n()).convert().normal().D - pose.rot.D;
+            pose.rot = pose.rot.addD(Math.min(rotation, Math.abs(rotSpeed))*Math.signum(rotSpeed));
+         }
       }
-      if(nextTile.equals(map.getTile(tilePos))&&pose.pos.add(targetPoint.n()).magnitude()<map.squareSize){
-         getNextTile();
-      }
-      pose.rot = targetPoint.add(pose.pos.n()).convert().normal().mult(speed).mult(1/map.getTile(tilePos).movement);
-      pose.pos = pose.pos.add(pose.rot.convert());
       s.p = this.pose;
       for(int w = 0; w<weps.length; w++){
-         weps[w].update();
-         weps[w].s.p = weps[w].p;
+         weps[w].s.p = weps[w].p.add(pose);
       }
       //rot = rot.addD(-0.01);
       //pos = pos.add(rot.convert());

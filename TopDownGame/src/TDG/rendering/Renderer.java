@@ -80,9 +80,11 @@ public class Renderer extends JFrame{
    }
    
    public void drawEntity(Graphics bg, Graphics ug, Entity e){
+      drawOval(bg, e.getPose().pos, new Vector2D(e.weps[0].range).multiply(2));
       String strings[] = {
          "path.end" + e.getPath().end,
-         "nextTile" + e.getInfo()[0]
+         "tilePos" + e.getInfo()[0].toInt(),
+         "nextTile" + e.getInfo()[1].toInt()
       };
       drawLines(ug, strings, convertVec2D(e.getPose().pos.add(new Vector2D(20,20))));
       drawLine(bg, e.getPose().pos, e.getInfo()[1]);

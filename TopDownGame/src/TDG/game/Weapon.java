@@ -28,6 +28,6 @@ public class Weapon {
   }
 
   public void update(){
-
+    this.p = new Pose2D(offset.pos.rotateBy(offset.rot),offset.rot);
   }
 }

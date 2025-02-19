@@ -62,11 +62,19 @@ public class Vector2D {
    public Vector2D rotateBy(VectorMD other){
       return new Vector2D(this.x*Math.sin(other.D),this.y*Math.cos(other.D));
    }
+   public Vector2D toInt(){
+      return new Vector2D((int)this.x,(int)this.y);
+   }
    @Override
    public String toString(){
       return "X: " + x + " Y: " + y;
    }
-   public boolean equals(Vector2D other){
+   @Override
+   public boolean equals(Object o){
+      if (o==null || o.getClass()!=this.getClass()) {
+         return false;
+      }
+      Vector2D other = (Vector2D)o;
       return other.x==this.x&&other.y==this.y;
    }
 }

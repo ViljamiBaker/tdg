@@ -19,6 +19,6 @@ public class Pose2D{
    }
 
    public Pose2D add(Pose2D other){
-      return new Pose2D(other.pos.add(this.pos), other.rot.addD(this.rot));
+      return new Pose2D(this.pos.add(other.pos).rotateBy(other.rot), this.rot.addD(other.rot));
    }
 }

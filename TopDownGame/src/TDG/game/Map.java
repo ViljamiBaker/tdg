@@ -10,14 +10,14 @@ public class Map{
    public double[][][][] hTilesDist;
    public int size;
    public double squareSize;
-   public int hMult;
-   public Map(int size, double squareSize, int hMult){
+   public double hMult;
+   public Map(int size, double squareSize, double hMult){
       tiles = new Tile[size][size];
       this.size = size;
       this.squareSize = squareSize;
       for(int x = 0; x<size; x++){
          for(int y = 0; y<size; y++){
-            tiles[x][y] = new Tile(10, Math.random()*10+1, x, y);
+            tiles[x][y] = new Tile(10, Math.random()*2.5+1, x, y);
          }
       }
       this.hMult = hMult;
@@ -66,7 +66,7 @@ public class Map{
    }
    
    public Path generatePath(Vector2D start, Vector2D end){
-      if(getTile(start)==null){
+      if(getTile(start)==null||getTile(end)==null){
          return null;
       }
       Node startNode = new Node(0,Math.pow(start.x-end.x,2)+Math.pow(start.y-end.y,2),getTile(start),null);
