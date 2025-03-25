@@ -39,23 +39,23 @@ public class GameManager{
       0.05 
    );
    public GameManager(){
-      map = new Map(20,100.0, 1.5);
+      map = new Map(100,100.0, 1.5);
       entities.add(new Entity(et, map, new Pose2D(new Vector2D(100,0), new VectorMD(1,0)),1,this));
       entities.add(new Entity(et, map, new Pose2D(new Vector2D(1500,1500), new VectorMD(1,0)),2,this));
-      /*entities.add(new Entity(et, map, new Pose2D(new Vector2D(100,0), new VectorMD(1,0)),2));
-      entities.add(new Entity(et, map, new Pose2D(new Vector2D(200,0), new VectorMD(1,0)),2));
-      entities.add(new Entity(et, map, new Pose2D(new Vector2D(100,0), new VectorMD(1,0)),2));
-      entities.add(new Entity(et, map, new Pose2D(new Vector2D(200,0), new VectorMD(1,0)),2));
-      entities.add(new Entity(et, map, new Pose2D(new Vector2D(100,0), new VectorMD(1,0)),2));
-      entities.add(new Entity(et, map, new Pose2D(new Vector2D(200,0), new VectorMD(1,0)),2));
-      entities.add(new Entity(et, map, new Pose2D(new Vector2D(100,0), new VectorMD(1,0)),2));
-      entities.add(new Entity(et, map, new Pose2D(new Vector2D(200,0), new VectorMD(1,0)),2));
-      entities.add(new Entity(et, map, new Pose2D(new Vector2D(100,0), new VectorMD(1,0)),2));
-      entities.add(new Entity(et, map, new Pose2D(new Vector2D(200,0), new VectorMD(1,0)),2));
-      entities.add(new Entity(et, map, new Pose2D(new Vector2D(100,0), new VectorMD(1,0)),2));
-      entities.add(new Entity(et, map, new Pose2D(new Vector2D(200,0), new VectorMD(1,0)),2));
-      entities.add(new Entity(et, map, new Pose2D(new Vector2D(100,0), new VectorMD(1,0)),2));
-      entities.add(new Entity(et, map, new Pose2D(new Vector2D(200,0), new VectorMD(1,0)),2));*/
+      entities.add(new Entity(et, map, new Pose2D(new Vector2D(100,0), new VectorMD(1,0)),1,this));
+      entities.add(new Entity(et, map, new Pose2D(new Vector2D(1500,1500), new VectorMD(1,0)),2,this));
+      entities.add(new Entity(et, map, new Pose2D(new Vector2D(100,0), new VectorMD(1,0)),1,this));
+      entities.add(new Entity(et, map, new Pose2D(new Vector2D(1500,1500), new VectorMD(1,0)),2,this));
+      entities.add(new Entity(et, map, new Pose2D(new Vector2D(100,0), new VectorMD(1,0)),1,this));
+      entities.add(new Entity(et, map, new Pose2D(new Vector2D(1500,1500), new VectorMD(1,0)),2,this));
+      entities.add(new Entity(et, map, new Pose2D(new Vector2D(100,0), new VectorMD(1,0)),1,this));
+      entities.add(new Entity(et, map, new Pose2D(new Vector2D(1500,1500), new VectorMD(1,0)),2,this));
+      entities.add(new Entity(et, map, new Pose2D(new Vector2D(100,0), new VectorMD(1,0)),1,this));
+      entities.add(new Entity(et, map, new Pose2D(new Vector2D(1500,1500), new VectorMD(1,0)),2,this));
+      entities.add(new Entity(et, map, new Pose2D(new Vector2D(100,0), new VectorMD(1,0)),1,this));
+      entities.add(new Entity(et, map, new Pose2D(new Vector2D(1500,1500), new VectorMD(1,0)),2,this));
+      entities.add(new Entity(et, map, new Pose2D(new Vector2D(100,0), new VectorMD(1,0)),1,this));
+      entities.add(new Entity(et, map, new Pose2D(new Vector2D(1500,1500), new VectorMD(1,0)),2,this));
    }
    public Entity[] getEntities(){
       Entity[] entitesa = new Entity[entities.size()];
