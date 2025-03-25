@@ -21,7 +21,7 @@ public class GameManager{
       10,
       5,
       0.25,
-      1.0,
+      10.0,
       new WeaponTemplate[] {
          new WeaponTemplate(
             200, 
@@ -41,21 +41,21 @@ public class GameManager{
    public GameManager(){
       map = new Map(100,100.0, 1.5);
       entities.add(new Entity(et, map, new Pose2D(new Vector2D(100,0), new VectorMD(1,0)),1,this));
-      entities.add(new Entity(et, map, new Pose2D(new Vector2D(1500,1500), new VectorMD(1,0)),2,this));
+      entities.add(new Entity(et, map, new Pose2D(new Vector2D(1500,1500), new VectorMD(1,0)),1,this));
       entities.add(new Entity(et, map, new Pose2D(new Vector2D(100,0), new VectorMD(1,0)),1,this));
-      entities.add(new Entity(et, map, new Pose2D(new Vector2D(1500,1500), new VectorMD(1,0)),2,this));
+      entities.add(new Entity(et, map, new Pose2D(new Vector2D(1500,1500), new VectorMD(1,0)),1,this));
       entities.add(new Entity(et, map, new Pose2D(new Vector2D(100,0), new VectorMD(1,0)),1,this));
-      entities.add(new Entity(et, map, new Pose2D(new Vector2D(1500,1500), new VectorMD(1,0)),2,this));
+      entities.add(new Entity(et, map, new Pose2D(new Vector2D(1500,1500), new VectorMD(1,0)),1,this));
       entities.add(new Entity(et, map, new Pose2D(new Vector2D(100,0), new VectorMD(1,0)),1,this));
-      entities.add(new Entity(et, map, new Pose2D(new Vector2D(1500,1500), new VectorMD(1,0)),2,this));
+      entities.add(new Entity(et, map, new Pose2D(new Vector2D(1500,1500), new VectorMD(1,0)),1,this));
       entities.add(new Entity(et, map, new Pose2D(new Vector2D(100,0), new VectorMD(1,0)),1,this));
-      entities.add(new Entity(et, map, new Pose2D(new Vector2D(1500,1500), new VectorMD(1,0)),2,this));
+      entities.add(new Entity(et, map, new Pose2D(new Vector2D(1500,1500), new VectorMD(1,0)),1,this));
       entities.add(new Entity(et, map, new Pose2D(new Vector2D(100,0), new VectorMD(1,0)),1,this));
-      entities.add(new Entity(et, map, new Pose2D(new Vector2D(1500,1500), new VectorMD(1,0)),2,this));
+      entities.add(new Entity(et, map, new Pose2D(new Vector2D(1500,1500), new VectorMD(1,0)),1,this));
       entities.add(new Entity(et, map, new Pose2D(new Vector2D(100,0), new VectorMD(1,0)),1,this));
-      entities.add(new Entity(et, map, new Pose2D(new Vector2D(1500,1500), new VectorMD(1,0)),2,this));
+      entities.add(new Entity(et, map, new Pose2D(new Vector2D(1500,1500), new VectorMD(1,0)),1,this));
       entities.add(new Entity(et, map, new Pose2D(new Vector2D(100,0), new VectorMD(1,0)),1,this));
-      entities.add(new Entity(et, map, new Pose2D(new Vector2D(1500,1500), new VectorMD(1,0)),2,this));
+      entities.add(new Entity(et, map, new Pose2D(new Vector2D(1500,1500), new VectorMD(1,0)),1,this));
    }
    public Entity[] getEntities(){
       Entity[] entitesa = new Entity[entities.size()];
@@ -77,6 +77,7 @@ public class GameManager{
             validTargets.add(entity);
          }
       }
+      if(validTargets.isEmpty())return;
       int lowestInt = -1;
       double lowestDist = 1000000000;
       for (int j = 0; j < validTargets.size(); j++) {

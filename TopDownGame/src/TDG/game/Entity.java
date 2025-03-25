@@ -111,8 +111,8 @@ public class Entity{
                   return;
                }
             }
+            lastTargetTile = target.tilePos;
          }
-         lastTargetTile = target.tilePos;
       }
       getNextTile();
    }
